@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/activemq-all-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-camel-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-console-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-core-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-jaas-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-protobuf-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/activemq-web-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/camel-core-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/camel-jetty-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/camel-jms-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/camel-spring-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/geronimo-jms_1.1_spec-1.1.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://docs.oracle.com/javaee/1.3/api/javax/jms/package-summary.html"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/geronimo-jta_1.0.1B_spec-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/jaxb-impl-2.1.6.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/jcl-over-slf4j-1.5.11.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/kahadb-5.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/slf4j-api-1.5.11.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/stax-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/optional/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-5.5.1/lib/optional/slf4j-log4j12-1.5.11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
