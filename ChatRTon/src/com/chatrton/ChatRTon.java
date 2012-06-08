@@ -18,23 +18,33 @@ public class ChatRTon {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		User u = new User("StraToN");
-		Server server = new Server("localhost", 61616);
-		server.connect(u.getNickName());
-		Channel chan = server.createChannel("chandefou", u);
+		User user = new User("StraToN");
 		
 		try {
-			chan.say("Coucou !");
-			chan.say("Coucou !");
-			chan.say("Coucou !");
-			chan.say("Coucou !");
-			chan.say("Coucou !");
-		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			user.connectServer("localhost", 61616);
+			user.joinChannel("localhost", "chandefou");
+			user.joinChannel("localhost", "monbeauchannel");
+		} catch (JMSException e2) {
+			e2.printStackTrace();
 		}
 		
-		server.disconnect();
+		
+		try {
+			user.say("localhost", "chandefou", "Coucou chandefou!");
+			user.say("localhost", "monbeauchannel", "Coucou monbeauchannel!");
+			
+		} catch (JMSException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		user.disconnect("localhost");
 	}
 
 }

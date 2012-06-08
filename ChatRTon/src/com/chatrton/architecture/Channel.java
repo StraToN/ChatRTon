@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -12,16 +13,14 @@ import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 
-public class Channel {
+public class Channel implements MessageListener {
 	private String					channelName;
 	private ArrayList<User> 		usersList;
 	private TopicSession	 		topicSession;
 	private TopicPublisher			topicPublisher;
 	private TopicSubscriber			topicSubscriber;
 	
-	private ReceiveMessagesThread 	receiveThread;
-//	private SendMessagesThread		sendThread;
-	Topic							topic;
+	private Topic					topic;
 
 	public Channel(String name, User creator, TopicConnection topicConnection) throws JMSException {
 		channelName = name;
@@ -33,21 +32,18 @@ public class Channel {
 		topicPublisher = topicSession.createPublisher(topic);
 		topicSubscriber = topicSession.createSubscriber(topic);
 		
-		receiveThread = new ReceiveMessagesThread(this);
-		receiveThread.start();
+		// the channel receives his messages himself
+		topicSubscriber.setMessageListener(this);
 	}
 	
 	public void leave() {
-		// todo : notify the channel that we leave
-		if (receiveThread.isAlive()) {
-			receiveThread.halt();
-		}
+		// TODO : notify the channel that we leave
 	}
 
-	public void say(String string) throws JMSException {
-		TextMessage message;
-		message = topicSession.createTextMessage(string);
-		topicPublisher.publish(message);
+	public void sendMessage(String string, User user) throws JMSException {
+		// TODO : add username into message
+		TextMessage message = topicSession.createTextMessage(string);
+		topicPublisher.send(message);
 	}
 	
 	public Message receive() throws JMSException {
@@ -69,6 +65,18 @@ public class Channel {
 	 */
 	public void setChannelName(String channelName) {
 		this.channelName = channelName;
+	}
+
+	@Override
+	public void onMessage(Message messageReceived) {
+		// TODO : transform message into command and treat it elsewhere
+		if (messageReceived instanceof TextMessage) {
+			try {
+				System.out.println( this.channelName + " : " + ((TextMessage) messageReceived).getText() );
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	

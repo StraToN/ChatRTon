@@ -1,13 +1,11 @@
 package com.chatrton.architecture;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.QueueConnection;
 import javax.jms.Session;
-import javax.jms.Topic;
 import javax.jms.TopicConnection;
 
 import org.apache.activemq.broker.BrokerService;
@@ -25,7 +23,6 @@ public class Server extends BrokerService {
 	private final String hostname;
 	private final int port;
 	private ArrayList<Channel> listChannels;
-	private String nickNameServer;
 	
 	
 	public Server(String hostname, int port) {
@@ -35,28 +32,29 @@ public class Server extends BrokerService {
 		this.listChannels = new ArrayList<Channel>();
 	}
 	
-	public void connect(String nick) {
+	public boolean connect() {
+		boolean connectionSuccessful = false;
 		try {	
-			connection = activemqConn.getActivemqConn().createConnection();
+			connection = activemqConn.getActivemqConnectionFactory().createConnection();
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			topicConnection = activemqConn.getActivemqConn().createTopicConnection();
-			queueConnection = activemqConn.getActivemqConn().createQueueConnection();
+			topicConnection = activemqConn.getActivemqConnectionFactory().createTopicConnection();
+			queueConnection = activemqConn.getActivemqConnectionFactory().createQueueConnection();
 			
 			connection.start();
 			topicConnection.start();
 			queueConnection.start();
-			
-			setNickNameServer(nick);
+			connectionSuccessful = true;
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+		
+		return connectionSuccessful;
 	}
 	
 	public void disconnect() {
 		try {
 			if (connection != null) {
-				
 				// leave all channels
 				for (Channel channel : listChannels) {
 					channel.leave();
@@ -66,6 +64,8 @@ public class Server extends BrokerService {
 				topicConnection.close(); 
 				queueConnection.close();
 				connection.close();
+				
+				System.out.println("Disconnected from " + this.hostname + "successfully.");
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -89,27 +89,22 @@ public class Server extends BrokerService {
 		return port;
 	}
 
-	public String getNickNameServer() {
-		return nickNameServer;
-	}
-
-	public void setNickNameServer(String nickNameServer) {
-		this.nickNameServer = nickNameServer;
-	}
-	
 	// todo
 	public Channel getChannel(String name) {
 		return null;
 	}
 	
-	public Channel createChannel(String channelName, User creator) {
-		Channel chan = null ;
-		try {
-			chan = new Channel(channelName, creator, topicConnection);
-			this.listChannels.add(chan);
-		} catch (JMSException e) {
-			e.printStackTrace();
+	public Channel joinChannel(String channelName, User creator) throws JMSException {
+		for (Channel channel : listChannels) {
+			if (channel.getChannelName() == channelName) {
+				return channel;
+			}
 		}
+		
+		Channel chan = null ;
+		chan = new Channel(channelName, creator, topicConnection);
+		this.listChannels.add(chan);
+		creator.addNewChannelConnected(this, chan);
 		
 		return chan;
 	}
