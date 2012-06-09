@@ -1,4 +1,4 @@
-package com.chatrton.architecture;
+package org.chatrton.architecture;
 
 import javax.jms.QueueConnection;
 

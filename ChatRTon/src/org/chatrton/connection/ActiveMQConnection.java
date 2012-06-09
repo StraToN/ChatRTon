@@ -1,4 +1,4 @@
-package com.chatrton.connection;
+package org.chatrton.connection;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 

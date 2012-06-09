@@ -1,6 +1,6 @@
-package com.chatrton.protocol;
+package org.chatrton.protocol;
 
-import com.chatrton.architecture.User;
+import org.chatrton.architecture.User;
 
 abstract class Command {
 	private String 	strCommand;

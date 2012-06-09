@@ -1,4 +1,4 @@
-package com.chatrton.architecture;
+package org.chatrton.architecture;
 
 import java.util.ArrayList;
 
@@ -36,8 +36,19 @@ public class Channel implements MessageListener {
 		topicSubscriber.setMessageListener(this);
 	}
 	
-	public void leave() {
-		// TODO : notify the channel that we leave
+	public boolean leave() {
+		boolean success = false;
+		try {
+			topicSession.close();
+			topicPublisher.close();
+			topicSession.close();
+			
+			System.out.println("Left channel " + this.channelName + " successfully.");
+			success = true;
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 	public void sendMessage(String string, User user) throws JMSException {

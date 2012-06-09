@@ -1,4 +1,4 @@
-package com.chatrton.architecture;
+package org.chatrton.architecture;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ import javax.jms.TopicConnection;
 
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.chatrton.connection.ActiveMQConnection;
 
-import com.chatrton.connection.ActiveMQConnection;
 
 public class Server extends BrokerService {
 	private ActiveMQConnection activemqConn;
@@ -45,6 +45,8 @@ public class Server extends BrokerService {
 			queueConnection.start();
 			connectionSuccessful = true;
 			
+			System.out.println("Connected to server "+hostname+":"+port+" successfully.");
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -52,24 +54,22 @@ public class Server extends BrokerService {
 		return connectionSuccessful;
 	}
 	
-	public void disconnect() {
+	public boolean disconnect() {
+		boolean success = false;
 		try {
 			if (connection != null) {
-				// leave all channels
-				for (Channel channel : listChannels) {
-					channel.leave();
-				}
-				
 				session.close();
 				topicConnection.close(); 
 				queueConnection.close();
 				connection.close();
 				
-				System.out.println("Disconnected from " + this.hostname + "successfully.");
+				System.out.println("Disconnected from " + this.hostname + " successfully.");
+				success = true;
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+		return success;
 	}
 	
 	public ArrayList<ActiveMQDestination> getListChannels() {
@@ -97,6 +97,7 @@ public class Server extends BrokerService {
 	public Channel joinChannel(String channelName, User creator) throws JMSException {
 		for (Channel channel : listChannels) {
 			if (channel.getChannelName() == channelName) {
+				System.out.println("Channel already joined " + channelName);
 				return channel;
 			}
 		}
@@ -104,7 +105,8 @@ public class Server extends BrokerService {
 		Channel chan = null ;
 		chan = new Channel(channelName, creator, topicConnection);
 		this.listChannels.add(chan);
-		creator.addNewChannelConnected(this, chan);
+		
+		System.out.println("Joining channel " + channelName);
 		
 		return chan;
 	}
