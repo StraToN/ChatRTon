@@ -24,10 +24,8 @@ public class Main {
 	public static void main(String[] args) {	
 		// Init localization
         final ResourceBundle i18ln = ResourceBundle.getBundle("org.chatrton.lang", Locale.getDefault());
-
-		
-		
-		//MainPanel mainPanel = new MainPanel();
+        
+        MainPanel mainPanel = new MainPanel(i18ln);
 	}
 	/*
 	public static void main(String[] args) {
