@@ -1,0 +1,132 @@
+- BUG : nouvel arrivant n'a pas toujours la liste d'utilisateurs
+- BUG : clic sur Quitter ne quitte pas
+- BUG : changement de login ne s'affiche pas dans la liste de l'utilisateur, et les autres non plus
+- BUG : repaint de la fenetre de discussion quand on remonte l'ascenseur
+- BUG?	Exception bizarre
+	Exception in thread "Thread-4" 
+	java.lang.ClassCastException: sun.java2d.NullSurf aceData cannot be cast to sun.java2d.d3d.D3DSurfaceData         
+	at sun.java2d.d3d.D3DRenderer.copyArea(Unknown Source)         
+	at sun.java2d.d3d.D3DSurfaceData.copyArea(Unknown Source)         
+	at sun.java2d.SunGraphics2D.doCopyArea(Unknown Source)         
+	at sun.java2d.SunGraphics2D.copyArea(Unknown Source)         
+	at javax.swing.BufferStrategyPaintManager.copyArea(Unknown Source)         
+	at javax.swing.RepaintManager.copyArea(Unknown Source)         
+	at javax.swing.JViewport.blitDoubleBuffered(Unknown Source)         
+	at javax.swing.JViewport.windowBlitPaint(Unknown Source)         
+	at javax.swing.JViewport.setViewPosition(Unknown Source)         
+	at javax.swing.JViewport.scrollRectToVisible(Unknown Source)         
+	at javax.swing.JComponent.scrollRectToVisible(Unknown Source)         
+--->	at ThreadInfo.run(ThreadInfo.java:68)
+
+
+
+- NEW : Barre de menu (+ à propos)
+- NEW : auto away
+- NEW : logo (chaterton, rouleau de scotch brun...)
+- NEW : nouvelle création de channel 
+	* mot de passe accès
+	* mot de passe opérateur
+- FEATURE : connexion au serveur : ip + port (actuellement, port 61616 en dur)
+- NEW : notifications 
+	* visuelles (clignoter le titre de la fenetre ? popup ?)
+	* sonores
+- NEW : bouton options
+	* activer ou non la date du message après le pseudo
+	* auto away (time)
+- NEW : couleur de police
+- NEW : surligner les lignes de messages contenant le pseudo de l'user
+- NEW : liens HTML cliquables
+- NEW : smileys
+- NEW : système de kick/ban/op
+	* système de commandes (/commande <param>)
+		ex : /me, /nick
+- NEW : onglets pour multi channel 
+- NEW : Private Messages
+- NEW : quotes par clic sur le nom d'un utilisateur
+- NEW : #$*%! mots grossiers
+
+- FEATURE : MODs (ajouter des boutons d'action en bas de la fenêtre)
+- IMPROVE : GUI plus sexy
+
+
+
+
+PROTOCOLE
+
+***** DEMANDES CLIENT pour thread admin et REPONSES SERVEUR *****
+SYNTAXE : /commande/mynick/param1/param2/...
+
+
+/connect/nick/xx.xx.xx.xx
+	* success : 
+		* Accès serveur : 			/welcome/nick
+		* Acceptation nick :			/hello/nick
+	* failure : 
+		* Nick déjà pris			/nickunavailable/nick
+
+/listchannels/nick
+	* Renvoi liste channels				/channel/nick/<publicchannel1>/<publicchannel2>/...
+	* attention si liste trop longue !
+	
+/nick/myNick
+	* Acceptation nick :				/hello/myNick
+
+/join/nick/channel1/channel2/...
+	* Pour chaque channel :
+		* success :
+			* Acceptation nick sur channel	/accessgranted/nick/channel
+		* failure (mot de passe, channel fermé) :
+			* Refus d'acces			/accessdenied/nick/channel/reason		
+	
+/leave/nick/channel1/channel2/...
+	* Pour chaque channel
+		* Acceptation départ channel :		/bye/nick/channel
+		(suivi d'une notification channel /notifybye/channel/nick pour chaque channel)
+
+/disconnect/nick 				 -----> /leave/nick/channel1/channel2/... cf. ci-dessus
+	* Acceptation départ serveur :			/goodbye/nick
+	
+/say/nick/message
+	* Message standard : 				/say/nick/channel/message
+	
+/sayto/nick/nickDest/message
+	
+/channelsay/nick/message
+	* Message channel de type "/me ...":		/channelsay/nick/channel/message 	
+
+
+
+
+
+***** DEMANDES OP *****
+
+/op/nick/channel/password				Demande de droit Opérateur
+
+/kick/nickOp/nick/channel/reason			Kick un utilisateur
+
+/closechannel/nickOp/channel				Ferme le channel (possible de quitter, impossible de rejoindre)
+
+/openchannel/nickOp/channel				Ouvre le channel
+
+/setchannelprivate/nickOp/channel/password		Change le password d'entrée
+							(Passe le channel automatiquement en mode privé)
+							
+/setchannelpublic/nickOp/channel			Passe le channel en mode public (accessible sans password)
+
+
+
+
+
+***** NOTIFICATIONS ADMIN --> channels *****
+(chaque channel a son "nick")
+SYNTAXE : /commande/destination/param1/param2 (destination = nick ou channel)
+
+/notifybye/channel/nick 		Notification users channel du départ d'un user)
+
+/bye/nick/channel			Notification du départ de l'utilisateur du channel "channel"
+
+/goodbye/nick				Notification deconnexion de l'utilisateur
+
+/say/nick/channel/message		Message standard
+
+/channelsay/nick/channel/message 	Message type /me
