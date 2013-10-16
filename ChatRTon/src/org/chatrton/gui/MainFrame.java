@@ -10,8 +10,8 @@ public class MainFrame extends JFrame {
 	private DiscussionPanel discussionPan;
 	private MenuBar menuBar;
 	
-	public MainFrame(ResourceBundle i18nRes) {
-		super(i18nRes.getString("Application_Name"));
+	public MainFrame() {
+		super(Localisator.getInstance().getString("Application_Name"));
 		
 		discussionPan = new DiscussionPanel();
 		this.add(discussionPan);
