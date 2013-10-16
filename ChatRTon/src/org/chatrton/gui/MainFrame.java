@@ -4,18 +4,18 @@ import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 
-public class MainPanel extends JFrame {
+public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = -315891229243487266L;
 	private DiscussionPanel discussionPan;
 	private MenuBar menuBar;
 	
-	public MainPanel(ResourceBundle i18nRes) {
+	public MainFrame(ResourceBundle i18nRes) {
 		super(i18nRes.getString("Application_Name"));
 		
-		discussionPan = new DiscussionPanel(i18nRes);
+		discussionPan = new DiscussionPanel();
 		this.add(discussionPan);
-		menuBar = new MenuBar(i18nRes);
+		menuBar = new MenuBar();
 		this.setJMenuBar(menuBar);
 		
 		this.setSize(800, 600);

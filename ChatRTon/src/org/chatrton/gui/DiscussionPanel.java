@@ -21,7 +21,7 @@ public class DiscussionPanel extends JPanel {
 	protected JTextPane mainDiscussionPane;
 	protected JTextField typeDiscussionField;
 	
-	public DiscussionPanel(ResourceBundle i18nRes) {
+	public DiscussionPanel() {
 		super(new GridBagLayout());
 		gbConstraints = new GridBagConstraints();
 		

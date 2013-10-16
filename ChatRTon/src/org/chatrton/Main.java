@@ -10,7 +10,7 @@ import javax.jms.JMSException;
 import org.chatrton.architecture.ChannelNotConnectedException;
 import org.chatrton.architecture.ServerNotConnectedException;
 import org.chatrton.architecture.User;
-import org.chatrton.gui.MainPanel;
+import org.chatrton.gui.MainFrame;
 
 
 
@@ -25,7 +25,7 @@ public class Main {
 		// Init localization
         final ResourceBundle i18ln = ResourceBundle.getBundle("org.chatrton.lang", Locale.getDefault());
         
-        MainPanel mainPanel = new MainPanel(i18ln);
+        MainFrame mainPanel = new MainFrame(i18ln);
 	}
 	/*
 	public static void main(String[] args) {
