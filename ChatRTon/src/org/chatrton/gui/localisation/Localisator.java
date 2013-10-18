@@ -1,4 +1,4 @@
-package org.chatrton.gui;
+package org.chatrton.gui.localisation;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -14,7 +14,7 @@ public final class Localisator {
 		i18ln = ResourceBundle.getBundle("org.chatrton.lang", locale);
 	}
 	
-	public final static Localisator getInstance() {
+	private final static Localisator getInstance() {
 		if (instance == null) {
 			synchronized (Localisator.class) {
 				if (instance == null)
@@ -30,7 +30,8 @@ public final class Localisator {
 		i18ln = ResourceBundle.getBundle("org.chatrton.lang", locale);
 	}
 	
-	public String getString(String key) {
+	public static String getString(String key) {
+		getInstance();
 		return i18ln.getString(key);
 	}
 }

@@ -1,8 +1,8 @@
 package org.chatrton.gui;
 
-import java.util.ResourceBundle;
-
 import javax.swing.JFrame;
+
+import org.chatrton.gui.localisation.Localisator;
 
 public class MainFrame extends JFrame {
 
@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 	private MenuBar menuBar;
 	
 	public MainFrame() {
-		super(Localisator.getInstance().getString("Application_Name"));
+		super(Localisator.getString("Application_Name"));
 		
 		discussionPan = new DiscussionPanel();
 		this.add(discussionPan);

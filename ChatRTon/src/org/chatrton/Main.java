@@ -3,13 +3,6 @@
  */
 package org.chatrton;
 
-import java.util.*;
-
-import javax.jms.JMSException;
-
-import org.chatrton.architecture.ChannelNotConnectedException;
-import org.chatrton.architecture.ServerNotConnectedException;
-import org.chatrton.architecture.User;
 import org.chatrton.gui.MainFrame;
 
 

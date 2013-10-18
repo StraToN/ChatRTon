@@ -2,18 +2,14 @@ package org.chatrton.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.ResourceBundle;
 
-import javax.swing.AbstractButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.chatrton.debug.Debugger;
+import org.chatrton.gui.localisation.Localisator;
 
 public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = -5569257246506350543L;
@@ -52,32 +48,34 @@ public class MenuBar extends JMenuBar {
 		}
 		*/
 	
-		JMenu menuFile = new JMenu(Localisator.getInstance().getString("menubar_File"));
-		JMenuItem jmiFileConnect = new JMenuItem(Localisator.getInstance().getString("menubar_File_Connect"));
+		JMenu menuFile = new JMenu(Localisator.getString("menubar_File"));
+		JMenuItem jmiFileConnect = new JMenuItem(Localisator.getString("menubar_File_Connect"));
 		jmiFileConnect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				menuFileConnectActionPerformed(evt);
+				Debugger.log("File/Connect action.");
+				ConnectionDialog.showInstance();
 			}
 		});
 		
-		JMenuItem jmiFileExit = new JMenuItem(Localisator.getInstance().getString("menubar_File_Exit"));
+		JMenuItem jmiFileExit = new JMenuItem(Localisator.getString("menubar_File_Exit"));
 		jmiFileExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				menuFileExitActionPerformed(evt);
+				Debugger.log("File/Exit action.");
+				System.exit(0);
 			}
 		});
 		menuFile.add(jmiFileConnect);
 		menuFile.add(jmiFileExit);
 		
 		// HELP
-		JMenu menuAbout = new JMenu(Localisator.getInstance().getString("menubar_Help"));
-		JMenuItem jmiHelpAbout = new JMenuItem(Localisator.getInstance().getString("menubar_Help_About"));
+		JMenu menuAbout = new JMenu(Localisator.getString("menubar_Help"));
+		JMenuItem jmiHelpAbout = new JMenuItem(Localisator.getString("menubar_Help_About"));
 		jmiHelpAbout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				menuHelpAboutActionPerformed(evt);
+				Debugger.log("Help/About action.");
 			}
 		});
 		menuAbout.add(jmiHelpAbout);
@@ -94,33 +92,5 @@ public class MenuBar extends JMenuBar {
 	}
 	
 	
-	/**
-	 * File/Exit action to open Connection dialog
-	 * @param evt
-	 */
-	private static void menuFileConnectActionPerformed(ActionEvent evt)
-	{
-		Debugger.log("File/Connect action.");
-		ConnectionDialog cd = ConnectionDialog.getInstance();
-	}
-	
-	
-	/**
-	 * File/Exit action to close the window and finish application
-	 * @param evt
-	 */
-	private static void menuFileExitActionPerformed(ActionEvent evt)
-	{
-		Debugger.log("File/Exit action.");
-		System.exit(0);
-	}
-	
-	/**
-	 * Help/About action to show about frame
-	 * @param evt
-	 */
-	private static void menuHelpAboutActionPerformed(ActionEvent evt) {
-		Debugger.log("Help/About action.");
-	}
 	
 }

@@ -1,31 +1,40 @@
 package org.chatrton.gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-public class ConnectionDialog extends JFrame {
+import org.chatrton.debug.Debugger;
+import org.chatrton.gui.localisation.Localisator;
+
+public class ConnectionDialog extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -7185220667061024452L;
 	
 	private static volatile ConnectionDialog instance = null;
+	
+	private JButton jbOK;
+	private JButton jbCancel;
 
 	private ConnectionDialog() {
 		super();
-		this.setTitle(Localisator.getInstance().getString("frameconnection_Name"));
-		this.setSize(450,250);
+		this.setTitle(Localisator.getString("frameconnection_Name"));
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setVisible(true);
 		
 		setContent();
 	}
 	
-	public final static ConnectionDialog getInstance() {
+	private final static ConnectionDialog getInstance() {
 		if (instance == null) {
 			synchronized (ConnectionDialog.class) {
 				if (instance == null)
@@ -37,23 +46,37 @@ public class ConnectionDialog extends JFrame {
 	
 	
 	private void setContent() {
-		JPanel mainPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbConstraints = new GridBagConstraints();
+		JPanel mainPanel = new JPanel(new FlowLayout());
 		
-		JTextPane mainDiscussionPane = new JTextPane();
-		mainDiscussionPane.setBorder(BorderFactory.createLineBorder(Color.black));
-		mainDiscussionPane.setEditable(false);
-		gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-		gbConstraints.gridx = 0;
-		gbConstraints.gridy = 0;
-		this.add(mainDiscussionPane, gbConstraints);
+		JLabel labelServerURL = new JLabel(Localisator.getString("frameconnection_Label_Server"));
+		JTextField jtfServerURL = new JTextField(20);
 		
-		JTextField typeDiscussionField = new JTextField();
-		gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-		gbConstraints.gridx = 0;
-		gbConstraints.gridy = 0;
-		this.add(typeDiscussionField, gbConstraints);
+		jbOK = new JButton(Localisator.getString("global_Button_OK"));
+		jbOK.addActionListener(new ConnectionDialogController(this));
+		
+		jbCancel = new JButton(Localisator.getString("global_Button_Cancel"));
+		jbCancel.addActionListener(this);
+		
+		mainPanel.add(labelServerURL);
+		mainPanel.add(jtfServerURL);
+		mainPanel.add(jbOK);
+		mainPanel.add(jbCancel);
 		
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.add(mainPanel);
+		this.pack();
+		this.setLocationRelativeTo(null);
 	}
+	
+	public static void showInstance() {
+		getInstance().setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Debugger.log("Cancel Connection action.");
+		if (e.getSource() == this.jbCancel)
+			this.dispose();
+	}
+
 }
